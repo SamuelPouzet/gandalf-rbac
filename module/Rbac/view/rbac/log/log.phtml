@@ -1,0 +1,47 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Sam
+ * Date: 01/11/2020
+ * Time: 13:40
+ */
+?>
+
+<section id="main-container">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-7">
+                <?= $this->form()->opentag($this->form); ?>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><?= $this->formLabel($form->get('email')); ?></label>
+                            <?= $this->formElement($form->get('email')); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><?= $this->formLabel($form->get('password')); ?></label>
+                            <?= $this->formElement($form->get('password')); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="checkbox">
+                            <label>
+                                <?= $this->formElement($form->get('remember_me')); ?> Remember me
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <?= $this->formElement($form->get('redirect_url')); ?>
+                <?= $this->formElement($form->get('csrf')) ?>
+                <div class="text-right"><br>
+                    <button class="btn btn-primary solid blank" type="submit">Send Message</button>
+                </div>
+                <?= $this->form()->closeTag(); ?>
+            </div>
+        </div>
+    </div>
+    <!--/ container end -->
+</section>

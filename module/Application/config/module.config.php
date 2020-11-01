@@ -49,7 +49,7 @@ return [
         'mode'=>'restrictive',
         'parameters'=>[
             Controller\IndexController::class=>[
-                'index'=> '@',
+                'index'=> '*',
                 'show'=>'*',
                 'admin'=>'@',
             ],

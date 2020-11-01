@@ -46,7 +46,7 @@ class AuthManager
             $actionConfig = [$actionConfig];
         }
         if(in_array('*', $actionConfig)){
-            die('bypass, everything OK');
+            return true;
         }
 
         $this->getAuth($actionConfig);

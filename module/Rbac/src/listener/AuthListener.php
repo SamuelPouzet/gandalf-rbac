@@ -43,7 +43,6 @@ class AuthListener extends AbstractListenerAggregate
 
         $authManager->authenticate($controllerName, $actionName);
 
-        die(var_dump($controllerName));
     }
 
 }
