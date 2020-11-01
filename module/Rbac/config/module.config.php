@@ -9,7 +9,9 @@
 namespace Rbac;
 
 use Rbac\Controller\Factory\LogControllerFactory;
+use Rbac\Service\AuthenticationService;
 use \Rbac\Service\AuthManager;
+use Rbac\Service\Factory\AuthenticationServiceFactory;
 use \Rbac\Service\Factory\AuthManagerFactory;
 use \Laminas\Router\Http\Literal;
 use Rbac\Controller\LogController;
@@ -45,7 +47,8 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            AuthManager::class=>AuthManagerFactory::class
+            AuthManager::class=>AuthManagerFactory::class,
+            AuthenticationService::class=>AuthenticationServiceFactory::class,
         ],
     ],
     'view_manager' => [

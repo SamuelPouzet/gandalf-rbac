@@ -11,6 +11,7 @@ namespace Rbac\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Rbac\Service\AuthenticationService;
 use Rbac\Service\AuthManager;
 
 class AuthManagerFactory implements FactoryInterface
@@ -29,7 +30,9 @@ class AuthManagerFactory implements FactoryInterface
             ];
         }
 
-        return new AuthManager($config);
+        $authService = $container->get(AuthenticationService::class);
+
+        return new AuthManager($config, $authService);
     }
 
 }

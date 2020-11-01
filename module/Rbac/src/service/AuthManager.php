@@ -11,12 +11,16 @@ namespace Rbac\Service;
 
 class AuthManager
 {
-    protected $config;
+
     const RESTRICTIVE = 'restrictive';
 
-    public function __construct(array $config)
+    protected $config;
+    protected $authService;
+
+    public function __construct(array $config, AuthenticationService $authService)
     {
         $this->config = $config;
+        $this->authService = $authService;
     }
 
     public function authenticate($controllerName, $actionName)
