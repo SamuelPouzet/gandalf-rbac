@@ -44,6 +44,17 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
         ],
     ],
+    'access_filter'=>[
+        //can only be permissive or restrictive
+        'mode'=>'restrictive',
+        'parameters'=>[
+            Controller\IndexController::class=>[
+                'index'=> '@',
+                'show'=>'*',
+                'admin'=>'@',
+            ],
+        ],
+    ],
     'view_manager' => [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,

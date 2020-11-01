@@ -23,7 +23,7 @@ class Module
         $application = $event->getApplication();
         $eventManager = $application->getEventManager();
 
-        $listener = new AuthListener();
+        $listener = new AuthListener($event);
         $listener->attach($eventManager);
     }
 
