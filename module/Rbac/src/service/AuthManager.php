@@ -55,11 +55,41 @@ class AuthManager
 
         $this->getAuth($actionConfig);
 
-        var_dump($this->config);die;
+        return true;
+
     }
 
     protected function getAuth(array $actionConfig)
     {
+        $identity = $this->authService->getInstance();
+        if(in_array("@", $actionConfig) && $identity ){
+            return true;
+        }
+
+        $roles = $identity->getRoles();
+
+        foreach ($actionConfig as $config){
+
+            switch($config[0]){
+                case '@':
+                    $config = substr($config,1);
+                    if($identity->getEmail() == $config){
+                        return true;
+                    }
+                    break;
+                case '+':
+                    foreach ($roles as $role){
+                        $config = substr($config,1);
+                        if($role->getName() == $config){
+                            return true;
+                        }
+                    }
+                    break;
+
+            }
+
+
+        }
         die('try to authenticate');
     }
 

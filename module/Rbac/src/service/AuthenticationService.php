@@ -8,15 +8,20 @@
 
 namespace Rbac\Service;
 
+use Doctrine\ORM\EntityManager;
+use Rbac\Entity\User;
 use Rbac\Service\Session\Storage;
 
 class AuthenticationService
 {
+    protected $entityManager;
     protected $sessionStorage;
+    protected $instanceIdentity;
 
-    public function __construct(Storage $sessionStorage)
+    public function __construct(EntityManager $entityManager, Storage $sessionStorage)
     {
         $this->sessionStorage = $sessionStorage;
+        $this->entityManager = $entityManager;
     }
 
     public function authenticate(array $data)
@@ -27,6 +32,13 @@ class AuthenticationService
     public function getIdentity()
     {
         return $this->sessionStorage->read();
+    }
+
+    public function getInstance():?User
+    {
+        $mail =  $this->sessionStorage->read();
+        $identity = $this->entityManager->getRepository(User::class)->findOneBy(['email'=>$mail]);
+        return $identity;
     }
 
     public function getStorage():Storage

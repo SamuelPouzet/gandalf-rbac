@@ -18,7 +18,8 @@
         "laminas/laminas-i18n": "^2.11",
         "laminas/laminas-math": "^3.2",
         "laminas/laminas-session": "^2.10",
-        "laminas/laminas-db": "^2.11"
+        "laminas/laminas-db": "^2.11",
+        "doctrine/doctrine-orm-module": "^3.0"
     },
     "autoload": {
         "psr-4": {
