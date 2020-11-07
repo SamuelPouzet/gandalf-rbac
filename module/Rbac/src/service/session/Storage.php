@@ -39,7 +39,7 @@ class Storage
         $this->sessionManager->{$this->member} = $contents;
     }
 
-    public function read():string
+    public function read():?string
     {
         return $this->sessionManager->{$this->member} ;
     }

@@ -53,6 +53,11 @@ class AuthManager
             return true;
         }
 
+        if(! $this->authService->hasIdentity()){
+            die('not connected');
+            return false;
+        }
+
         $this->getAuth($actionConfig);
 
         return true;
@@ -62,6 +67,7 @@ class AuthManager
     protected function getAuth(array $actionConfig)
     {
         $identity = $this->authService->getInstance();
+
         if(in_array("@", $actionConfig) && $identity ){
             return true;
         }

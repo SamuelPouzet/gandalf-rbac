@@ -34,6 +34,11 @@ class AuthenticationService
         return $this->sessionStorage->read();
     }
 
+    public function hasIdentity():bool
+    {
+        return $this->sessionStorage->read() != null;
+    }
+
     public function getInstance():?User
     {
         $mail =  $this->sessionStorage->read();

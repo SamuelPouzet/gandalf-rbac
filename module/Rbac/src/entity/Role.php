@@ -7,6 +7,7 @@
  */
 
 namespace Rbac\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +34,32 @@ class Role
      * @ORM\Column(name="is_active")
      */
     protected $is_active;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="users")
+     */
+    protected $users;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="children")
+     * @ORM\JoinTable(name="role_hierarchy",
+     *   joinColumns={@ORM\JoinColumn(name="id_parent", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="id_child", referencedColumnName="id")}
+     * )
+     */
+    protected $parents;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Role", mappedBy="parents")
+     */
+    protected $children;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->parents = new ArrayCollection();
+        $this->children = new ArrayCollection();
+    }
 
     /**
      * @return mixed
