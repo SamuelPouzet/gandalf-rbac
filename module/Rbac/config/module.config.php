@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\Router\Http\Segment;
 use Rbac\Controller\Factory\LogControllerFactory;
 use Rbac\Controller\Factory\PrivilegeControllerFactory;
+use Rbac\Controller\Plugin\CurrentUserPlugin;
+use Rbac\Controller\Plugin\Factory\CurrentUserPluginFactory;
 use Rbac\Controller\PrivilegeController;
 use Rbac\Service\Adapter\AuthAdapter;
 use Rbac\Service\Adapter\Factory\AuthAdapterFactory;
@@ -74,6 +76,14 @@ return [
             LogController::class => LogControllerFactory::class,
             PrivilegeController::class=>PrivilegeControllerFactory::class,
         ],
+    ],
+    'controller_plugins' => [
+        'factories' => [
+            CurrentUserPlugin::class=>CurrentUserPluginFactory::class,
+        ],
+        'aliases' => [
+            'currentUser'=>CurrentUserPlugin::class,
+        ]
     ],
     'access_filter'=>[
         //can only be permissive or restrictive
