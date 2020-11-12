@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Sam
- * Date: 06/11/2020
- * Time: 21:16
+ * Date: 07/11/2020
+ * Time: 14:57
  */
 
 namespace Rbac\Entity;
@@ -11,12 +11,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Role
+ * Class Privilege
  * @package Rbac\Entity
  * @ORM\Entity
- * @ORM\Table(name="role")
+ * @ORM\Table(name="privilege")
  */
-class Role
+class Privilege
 {
     /**
      * @ORM\Id
@@ -36,39 +36,23 @@ class Role
     protected $is_active;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="users")
+     * @ORM\Column(name="description")
      */
-    protected $users;
+    protected $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="children")
-     * @ORM\JoinTable(name="role_hierarchy",
-     *   joinColumns={@ORM\JoinColumn(name="id_parent", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="id_child", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="Role", mappedBy="privileges", cascade={"persist", "merge", "remove"})
      */
-    protected $parents;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Role", mappedBy="parents")
-     */
-    protected $children;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Privilege", inversedBy="roles", cascade={"persist", "merge"})
-     * @ORM\JoinTable(name="role_privilege",
-     *   joinColumns={@ORM\JoinColumn(name="id_role", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="id_privilege", referencedColumnName="id")}
-     * )
-     */
-    protected $privileges;
+    protected $roles;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->parents = new ArrayCollection();
-        $this->children = new ArrayCollection();
-        $this->privileges = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+    }
+
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
     }
 
     /**
@@ -81,7 +65,7 @@ class Role
 
     /**
      * @param mixed $id
-     * @return Role
+     * @return Privilege
      */
     public function setId($id)
     {
@@ -99,7 +83,7 @@ class Role
 
     /**
      * @param mixed $name
-     * @return Role
+     * @return Privilege
      */
     public function setName($name)
     {
@@ -117,7 +101,7 @@ class Role
 
     /**
      * @param mixed $is_active
-     * @return Role
+     * @return Privilege
      */
     public function setIsActive($is_active)
     {
@@ -125,9 +109,39 @@ class Role
         return $this;
     }
 
-    public function addPrivilege(Privilege $privilege):Role
+    /**
+     * @return mixed
+     */
+    public function getDescription()
     {
-        $this->privileges[] = $privilege;
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     * @return Privilege
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
+
+    public function addRole(Role $role):Privilege
+    {
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    public function getRoles():ArrayCollection
+    {
+        return $this->roles;
+    }
+
+    public function razRoles():Privilege
+    {
+        $this->roles = new ArrayCollection();
+        return $this;
+    }
+
 }

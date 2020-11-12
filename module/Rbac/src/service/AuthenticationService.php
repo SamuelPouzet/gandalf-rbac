@@ -9,45 +9,26 @@
 namespace Rbac\Service;
 
 use Doctrine\ORM\EntityManager;
-use Rbac\Entity\User;
-use Rbac\Service\Session\Storage;
 
-class AuthenticationService
+use Laminas\Authentication\Adapter;
+use Laminas\Authentication\Storage;
+use Rbac\Entity\User;
+
+class AuthenticationService extends \Laminas\Authentication\AuthenticationService
 {
     protected $entityManager;
-    protected $sessionStorage;
-    protected $instanceIdentity;
 
-    public function __construct(EntityManager $entityManager, Storage $sessionStorage)
+    public function __construct(Storage\StorageInterface $storage = null, Adapter\AdapterInterface $adapter = null, EntityManager $entityManager)
     {
-        $this->sessionStorage = $sessionStorage;
+        parent::__construct($storage, $adapter);
         $this->entityManager = $entityManager;
-    }
-
-    public function authenticate(array $data)
-    {
-        $this->sessionStorage->write($data['email']);
-    }
-
-    public function getIdentity()
-    {
-        return $this->sessionStorage->read();
-    }
-
-    public function hasIdentity():bool
-    {
-        return $this->sessionStorage->read() != null;
     }
 
     public function getInstance():?User
     {
-        $mail =  $this->sessionStorage->read();
+        $mail =  $this->storage->read();
         $identity = $this->entityManager->getRepository(User::class)->findOneBy(['email'=>$mail]);
         return $identity;
     }
 
-    public function getStorage():Storage
-    {
-        return $this->sessionStorage;
-    }
 }

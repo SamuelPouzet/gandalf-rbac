@@ -9,13 +9,20 @@
 namespace Rbac;
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Laminas\Router\Http\Segment;
 use Rbac\Controller\Factory\LogControllerFactory;
+use Rbac\Controller\Factory\PrivilegeControllerFactory;
+use Rbac\Controller\PrivilegeController;
+use Rbac\Service\Adapter\AuthAdapter;
+use Rbac\Service\Adapter\Factory\AuthAdapterFactory;
 use Rbac\Service\AuthenticationService;
 use \Rbac\Service\AuthManager;
 use Rbac\Service\Factory\AuthenticationServiceFactory;
 use \Rbac\Service\Factory\AuthManagerFactory;
 use \Laminas\Router\Http\Literal;
 use Rbac\Controller\LogController;
+use Rbac\Service\Factory\PrivilegeManagerFactory;
+use Rbac\Service\PrivilegeManager;
 
 return [
     'router'=>[
@@ -30,11 +37,42 @@ return [
                     ],
                 ],
             ],
+            'unlog'=>[
+                'type'=>Literal::class,
+                'options' => [
+                    'route'    => '/unlog',
+                    'defaults' => [
+                        'controller' => LogController::class,
+                        'action'     => 'unlog',
+                    ],
+                ],
+            ],
+            'privilege'=>[
+                'type'=>Segment::class,
+                'options' => [
+                    'route'    => '/privilege[/:action[/:id]]',
+                    'defaults' => [
+                        'controller' => PrivilegeController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'access_denied'=>[
+                'type'=>Literal::class,
+                'options' => [
+                    'route'    => '/access_denied',
+                    'defaults' => [
+                        'controller' => LogController::class,
+                        'action'     => 'access_denied',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             LogController::class => LogControllerFactory::class,
+            PrivilegeController::class=>PrivilegeControllerFactory::class,
         ],
     ],
     'access_filter'=>[
@@ -43,6 +81,13 @@ return [
         'parameters'=>[
             LogController::class=>[
                 'log'=> '*',
+                'access_denied'=>'*',
+                'unlog'=>'*',
+            ],
+            PrivilegeController::class=>[
+                'index'=> ['+role.admin'],
+                'new'=> ['+role.admin'],
+                'update'=> ['+role.admin'],
             ],
         ],
     ],
@@ -50,6 +95,8 @@ return [
         'factories' => [
             AuthManager::class=>AuthManagerFactory::class,
             AuthenticationService::class=>AuthenticationServiceFactory::class,
+            AuthAdapter::class=>AuthAdapterFactory::class,
+            PrivilegeManager::class=>PrivilegeManagerFactory::class,
         ],
     ],
     'view_manager' => [

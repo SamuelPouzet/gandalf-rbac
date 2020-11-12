@@ -1,0 +1,57 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Sam
+ * Date: 01/11/2020
+ * Time: 13:40
+ */
+?>
+
+<section id="main-container">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-7">
+                <?= $this->form()->opentag($this->form); ?>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><?= $this->formLabel($form->get('name')); ?></label>
+                            <?= $this->formElement($form->get('name')); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><?= $this->formLabel($form->get('enabled')); ?></label>
+                            <?= $this->formElement($form->get('enabled')); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>
+                                <label><?= $this->formLabel($form->get('description')); ?></label>
+                                <?= $this->formElement($form->get('description')); ?>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>
+                                <label><?= $this->formLabel($form->get('roles')); ?></label>
+                                <?= $this->formElement($form->get('roles')); ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <?= $this->formElement($form->get('csrf')) ?>
+                <div class="text-right"><br>
+                    <?= $this->formElement($form->get('submit')) ?>
+                </div>
+                <?= $this->form()->closeTag(); ?>
+            </div>
+        </div>
+    </div>
+    <!--/ container end -->
+</section>

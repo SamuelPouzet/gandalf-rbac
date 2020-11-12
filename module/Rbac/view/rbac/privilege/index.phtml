@@ -1,0 +1,47 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Sam
+ * Date: 07/11/2020
+ * Time: 14:46
+ */
+?>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Nom
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->privileges as $privilege): ?>
+    <tr>
+        <td>
+            <?= $privilege->getId(); ?>
+        </td>
+        <td>
+            <?= $privilege->getName(); ?>
+        </td>
+        <td>
+            <?= $privilege->getDescription(); ?>
+        </td>
+        <td>
+            <a class="btn btn-success" href="<?= $this->url('privilege', ['action'=> 'update', 'id'=>$privilege->getId() ]); ?>">Update</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+<a class="btn btn-success" href="<?= $this->url('privilege', ['action'=> 'new']); ?>">New</a>

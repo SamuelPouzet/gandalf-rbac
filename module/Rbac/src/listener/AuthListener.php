@@ -35,13 +35,24 @@ class AuthListener extends AbstractListenerAggregate
     public function checkAuth()
     {
         $routeMatch = $this->event->getRouteMatch();
-        $controller = $this->event->getTarget();
         $controllerName = $routeMatch->getParam('controller', null);
         $actionName = $routeMatch->getParam('action', null);
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
         $authManager = $this->event->getApplication()->getServiceManager()->get(AuthManager::class);
 
-        $authManager->authenticate($controllerName, $actionName);
+        $response = $authManager->authenticate($controllerName, $actionName);
+
+        switch($response){
+            case AuthManager::NEED_CONNECTION:
+                $this->event->getTarget()->redirect()->toRoute('log');
+                break;
+            case AuthManager::ACCESS_DENIED:
+                //avoid loop redirection
+                if($controllerName != 'log' ){
+                    $this->event->getTarget()->redirect()->toRoute('access_denied');
+                }
+                break;
+        }
 
     }
 

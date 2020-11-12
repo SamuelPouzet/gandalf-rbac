@@ -9,10 +9,15 @@
 namespace Rbac\Service;
 
 
+use Laminas\Authentication\Result;
+
 class AuthManager
 {
 
     const RESTRICTIVE = 'restrictive';
+    const NEED_CONNECTION = 0;
+    const ACCESS_GRANTED = 1;
+    const ACCESS_DENIED = 2;
 
     protected $config;
     protected $authService;
@@ -21,6 +26,25 @@ class AuthManager
     {
         $this->config = $config;
         $this->authService = $authService;
+    }
+
+    public function log(array $data):Result
+    {
+        if($this->authService->hasIdentity()){
+            die('already logged in');
+        }
+        $adapter = $this->authService->getAdapter();
+        $adapter->setEmail($data['email'])
+            ->setPassword($data['password']);
+        return $this->authService->authenticate();
+    }
+
+    public function unlog()
+    {
+        if( ! $this->authService->hasIdentity()){
+            die('not connected');
+        }
+        $this->authService->clearIdentity();
     }
 
     public function authenticate($controllerName, $actionName)
@@ -50,17 +74,14 @@ class AuthManager
             $actionConfig = [$actionConfig];
         }
         if(in_array('*', $actionConfig)){
-            return true;
+            return self::ACCESS_GRANTED;
         }
 
         if(! $this->authService->hasIdentity()){
-            die('not connected');
-            return false;
+            return self::NEED_CONNECTION;
         }
 
-        $this->getAuth($actionConfig);
-
-        return true;
+        return $this->getAuth($actionConfig);
 
     }
 
@@ -69,7 +90,7 @@ class AuthManager
         $identity = $this->authService->getInstance();
 
         if(in_array("@", $actionConfig) && $identity ){
-            return true;
+            return self::ACCESS_GRANTED;
         }
 
         $roles = $identity->getRoles();
@@ -80,14 +101,14 @@ class AuthManager
                 case '@':
                     $config = substr($config,1);
                     if($identity->getEmail() == $config){
-                        return true;
+                        return self::ACCESS_GRANTED;
                     }
                     break;
                 case '+':
                     foreach ($roles as $role){
                         $config = substr($config,1);
                         if($role->getName() == $config){
-                            return true;
+                            return self::ACCESS_GRANTED;
                         }
                     }
                     break;
@@ -96,7 +117,7 @@ class AuthManager
 
 
         }
-        die('try to authenticate');
+        return self::ACCESS_DENIED;
     }
 
 }
