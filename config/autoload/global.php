@@ -37,4 +37,23 @@ return [
     'session_containers' => [
         \Laminas\Session\Container::class,
     ],
+    'caches'=>[
+        'FilesystemCache' => [
+            'adapter' => [
+                'name'    => \Laminas\Cache\Storage\Adapter\Filesystem::class,
+                'options' => [
+                    'cache_dir' =>  __DIR__ . '/../../data/cache',
+                    // Store cached data for 1 hour.
+                    'ttl' => 60*60*1
+                ],
+            ],
+            'plugins' => [
+                [
+                    'name' => 'serializer',
+                    'options' => [
+                    ],
+                ],
+            ],
+        ],
+    ]
 ];

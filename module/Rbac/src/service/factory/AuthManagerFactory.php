@@ -13,6 +13,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Rbac\Service\AuthenticationService;
 use Rbac\Service\AuthManager;
+use Rbac\Service\PermissionManager;
 
 class AuthManagerFactory implements FactoryInterface
 {
@@ -31,8 +32,9 @@ class AuthManagerFactory implements FactoryInterface
         }
 
         $authService = $container->get(AuthenticationService::class);
+        $permissionManager = $container->get(PermissionManager::class);
 
-        return new AuthManager($config, $authService);
+        return new AuthManager($config, $authService, $permissionManager);
     }
 
 }

@@ -23,7 +23,9 @@ use Rbac\Service\Factory\AuthenticationServiceFactory;
 use \Rbac\Service\Factory\AuthManagerFactory;
 use \Laminas\Router\Http\Literal;
 use Rbac\Controller\LogController;
+use Rbac\Service\Factory\PermissionManagerFactory;
 use Rbac\Service\Factory\PrivilegeManagerFactory;
+use Rbac\Service\PermissionManager;
 use Rbac\Service\PrivilegeManager;
 
 return [
@@ -107,6 +109,7 @@ return [
             AuthenticationService::class=>AuthenticationServiceFactory::class,
             AuthAdapter::class=>AuthAdapterFactory::class,
             PrivilegeManager::class=>PrivilegeManagerFactory::class,
+            PermissionManager::class=>PermissionManagerFactory::class,
         ],
     ],
     'view_manager' => [

@@ -130,4 +130,67 @@ class Role
         $this->privileges[] = $privilege;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     * @return Role
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParents()
+    {
+        return $this->parents;
+    }
+
+    /**
+     * @param mixed $parents
+     * @return Role
+     */
+    public function setParents($parents)
+    {
+        $this->parents = $parents;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param mixed $children
+     * @return Role
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrivileges()
+    {
+        return $this->privileges;
+    }
+
 }

@@ -21,11 +21,13 @@ class AuthManager
 
     protected $config;
     protected $authService;
+    protected $permissionManager;
 
-    public function __construct(array $config, AuthenticationService $authService)
+    public function __construct(array $config, AuthenticationService $authService, PermissionManager $permissionManager)
     {
         $this->config = $config;
         $this->authService = $authService;
+        $this->permissionManager = $permissionManager;
     }
 
     public function log(array $data):Result
@@ -112,7 +114,12 @@ class AuthManager
                         }
                     }
                     break;
-
+                case '.':
+                    $permission = substr($config,1);
+                    if($this->permissionManager->isGranted($permission, $identity)){
+                        return self::ACCESS_GRANTED;
+                    }
+                    break;
             }
 
 
