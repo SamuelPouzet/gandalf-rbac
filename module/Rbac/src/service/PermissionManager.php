@@ -95,7 +95,7 @@ class PermissionManager
 
 
         if(!$user){
-            throw new \Exception('user not found');
+            return false;
         }
 
         $roles = $user->getRoles();
